@@ -2,14 +2,13 @@
  * @fileoverview My first rule
  * @author NyuB
  */
-"use strict";
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
-const rule = require("../../../lib/rules/learn-rule"),
-  RuleTester = require("eslint").RuleTester;
+import { RuleTester } from 'eslint';
+import { learnRuleModule } from '../../../lib/rules/learn-rule';
 
 
 //------------------------------------------------------------------------------
@@ -17,7 +16,7 @@ const rule = require("../../../lib/rules/learn-rule"),
 //------------------------------------------------------------------------------
 
 const ruleTester = new RuleTester();
-ruleTester.run("learn-rule", rule, {
+ruleTester.run("learn-rule", learnRuleModule, {
   valid: [
     'var a = bar(42);',
     'var a = foofighters(42);',

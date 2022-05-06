@@ -1,9 +1,8 @@
 /**
- * @fileoverview My first rule
+ * @fileoverview Replace fiberwait with await
  * @author NyuB
  */
-"use strict";
-
+import { Rule } from 'eslint';
 //------------------------------------------------------------------------------
 // Rule Definition
 //------------------------------------------------------------------------------
@@ -11,20 +10,20 @@
 /**
  * @type {import('eslint').Rule.RuleModule}
  */
-module.exports = {
+export const asyncRuleModule: Rule.RuleModule = {
   meta: {
     type: 'problem', // `problem`, `suggestion`, or `layout`
     docs: {
-      description: "My first rule",
+      description: "Replace fiberwait with await",
       category: "Fill me in",
       recommended: false,
-      url: null, // URL to the documentation page for this rule
+      url: undefined, // URL to the documentation page for this rule
     },
     fixable: 'code', // Or `code` or `whitespace`
     schema: [], // Add a schema if the rule has options
   },
 
-  create(context) {
+  create(context: Rule.RuleContext): Rule.RuleListener {
     // variables should be defined here
 
     //----------------------------------------------------------------------
@@ -38,19 +37,24 @@ module.exports = {
     //----------------------------------------------------------------------
 
     return {
-      // visitor functions for different types of nodes
-      CallExpression: function(node) {
-        if(node.callee.name === 'foo') {
+      CallExpression: function(node): void {
+        const name = (node.callee as any).name;
+        if(name === 'fiberwait') {
           context.report({
             node,
-            message: "Invalid call to foo, replace with bar",
-            fix: function(fixer) {
-              return fixer.replaceText(node.callee, 'bar')
-            }
-          });
-          return;
-        } else {
-          return;
+            message: '<fiberwait> call should be replaced with async/await',
+            fix: function (fixer): Rule.Fix {
+              const sourceCode = context.getSourceCode();
+              const expressionText = sourceCode.getText(node.arguments[0]);
+              if(node.parent.type === 'MemberExpression') {
+                return fixer.replaceText(node, '(await '+ expressionText+')');
+              } else {
+                return fixer.replaceText(node, 'await '+ expressionText);
+              }
+              
+            },
+          })
+          return
         }
       }
     };

@@ -2,13 +2,11 @@
  * @fileoverview Sample plugin to discover eslint
  * @author NyuB
  */
-"use strict";
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
-
-const requireIndex = require("requireindex");
+import requireindex from 'requireindex';
 
 //------------------------------------------------------------------------------
 // Plugin Definition
@@ -16,7 +14,7 @@ const requireIndex = require("requireindex");
 
 
 // import all rules in lib/rules
-module.exports.rules = requireIndex(__dirname + "/rules");
+module.exports.rules = requireindex(__dirname + "/rules");
 
 
 

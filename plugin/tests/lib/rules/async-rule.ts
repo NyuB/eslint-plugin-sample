@@ -2,14 +2,13 @@
  * @fileoverview Replace fiberwait with await
  * @author NyuB
  */
-"use strict";
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 
-const rule = require("../../../lib/rules/async-rule")
-const RuleTester = require("eslint").RuleTester
+import { asyncRuleModule } from '../../../lib/rules/async-rule'
+import { RuleTester } from 'eslint';
 
 // eslint-disable-next-line node/no-unpublished-require
 const babelParserPath = require.resolve('@babel/eslint-parser');
@@ -22,7 +21,7 @@ const ruleTester = new RuleTester({ parser: babelParserPath, parserOptions: { ec
 
 const expectedErrorMessageRegex = /.*fiberwait.*replace.*async.*await.*/;
 
-ruleTester.run("async-rule", rule, {
+ruleTester.run("async-rule", asyncRuleModule, {
   valid: [
     'var a = Promise.resolve(42)',
     'var b = await Promise.resolve(42)',
